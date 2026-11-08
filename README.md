@@ -49,7 +49,8 @@ A high-performance, multi-protocol Mihomo (Clash Meta) proxy client in Docker, o
 | Переменная | По умолчанию | Назначение |
 | --- | --- | --- |
 | `DNS_NAMESERVER` | `https://dns.google/dns-query#SELECTOR` | Основной DNS: Google DoH через выход, выбранный в группе `SELECTOR`. |
-| `DNS_PROXY_SERVER_NAMESERVER` | `system` | Отдельный DNS для разрешения имён прокси-серверов, необходимый для установления соединения с ними. |
+| `DNS_DEFAULT_NAMESERVER` | `system` | Bootstrap DNS для разрешения имён самих DNS-серверов (`default-nameserver`). |
+| `DNS_PROXY_SERVER_NAMESERVER` | `https://dns.google/dns-query` | Отдельный DNS для разрешения имён прокси-серверов: Google DoH без суффикса выбора выхода. |
 
 Каждая переменная задаёт один DNS-сервер. Укажите нужное значение в ENV контейнера в RouterOS и перезапустите контейнер. Пользовательские шаблоны должны явно использовать эти переменные; готовые пользовательские конфигурации автоматически не изменяются.
 
@@ -72,7 +73,7 @@ A high-performance, multi-protocol Mihomo (Clash Meta) proxy client in Docker, o
 - Если выбранный выход недоступен, основной DNS тоже может перестать работать. Автоматический откат на системный или прямой DNS этими параметрами не предусмотрен.
 - Если в `SELECTOR` выбран `DIRECT`, DoH идёт напрямую. Суффикс `#SELECTOR` не гарантирует использование VPN.
 - `DNS_PROXY_SERVER_NAMESERVER=system` использует DNS из системных настроек контейнера. Он должен работать независимо от основного DNS Mihomo: не направляйте его обратно в резолвер, которому для ответа нужен ещё не установленный прокси.
-- Разрешение имени самого DoH-сервера (`dns.google`) — отдельный bootstrap-этап, управляемый `default-nameserver` Mihomo. Эти два ENV не меняют его настройки и не гарантируют отсутствие всех DNS-запросов вне VPN.
+- Разрешение имени самого DoH-сервера (`dns.google`) — отдельный bootstrap-этап, управляемый `DNS_DEFAULT_NAMESERVER` (`default-nameserver` Mihomo), по умолчанию `system`. Настройки DNS не гарантируют отсутствие всех DNS-запросов вне VPN.
 - Google DoH обычно не разрешает локальные домены и внутренние DNS-зоны. Если они нужны, используйте подходящий DNS или собственный шаблон с `nameserver-policy`.
 - Эти параметры не изменяют DNS-forwarder и маршрутизацию RouterOS.
 
