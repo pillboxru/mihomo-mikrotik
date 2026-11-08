@@ -113,10 +113,10 @@ jobs:
             MIHOMO_VERSION=${{ steps.version.outputs.version }}
           push: true
           tags: |
-            ghcr.io/wiktorbgu/mihomo-mikrotik:latest
-            ghcr.io/wiktorbgu/mihomo-mikrotik:${{ steps.version.outputs.version }}
-            docker.io/wiktorbgu/mihomo-mikrotik:latest
-            docker.io/wiktorbgu/mihomo-mikrotik:${{ steps.version.outputs.version }}
+            ghcr.io/pillboxru/mihomo-mikrotik:latest
+            ghcr.io/pillboxru/mihomo-mikrotik:${{ steps.version.outputs.version }}
+            docker.io/${{ vars.DOCKERHUB_USERNAME }}/mihomo-mikrotik:latest
+            docker.io/${{ vars.DOCKERHUB_USERNAME }}/mihomo-mikrotik:${{ steps.version.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
